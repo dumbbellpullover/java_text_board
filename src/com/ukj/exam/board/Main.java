@@ -1,13 +1,23 @@
 package com.ukj.exam.board;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+  static void makeTestData(List<Article> articles) {
+    articles.add(new Article(1, "제목1", "내용1"));
+    articles.add(new Article(1, "제목2", "내용2"));
+    articles.add(new Article(1, "제목3", "내용3"));
+  }
   public static void main(String[] args) {
-
     Scanner sc = new Scanner(System.in);
     int articleLastId = 0;
     Article lastArticle = null;
+
+    List<Article> articles = new ArrayList<>();
+
+    makeTestData(articles);
 
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
@@ -18,6 +28,16 @@ public class Main {
 
       if (cmd.equals("exit")) {
         break;
+
+      } else if (cmd.equals("/usr/article/list")) {
+        System.out.println("== 게시물 리스트 ==");
+        System.out.println("-------------------");
+        System.out.println("번호 / 제목");
+
+        for (Article article : articles) {
+          System.out.printf("%d / %s\n", article.id, article.title);
+        }
+        System.out.println("-------------------");
 
       } else if (cmd.equals("/usr/article/detail")) {
         Article article = lastArticle;
