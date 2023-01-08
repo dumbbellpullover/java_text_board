@@ -26,18 +26,10 @@ public class UsrArticleController {
   }
 
   public void actionDelete(Rq rq) {
-    Map<String, String> params = rq.getQueryParams();
+    int id = rq.getIntParam("id", 0);
 
-    if (!params.containsKey("id")) {
-      System.out.println("id를 입력해주세요.");
-      return;
-    }
-
-    int id;
-    try {
-      id = Integer.parseInt(params.get("id"));
-    } catch (NumberFormatException e) {
-      System.out.println("id를 정수형태로 입력해주세요.");
+    if (id == 0) {
+      System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
 
@@ -58,18 +50,10 @@ public class UsrArticleController {
   }
 
   public void actionModify(Rq rq) {
-    Map<String, String> params = rq.getQueryParams();
+    int id = rq.getIntParam("id", 0);
 
-    if (!params.containsKey("id")) {
-      System.out.println("id를 입력해주세요.");
-      return;
-    }
-
-    int id;
-    try {
-      id = Integer.parseInt(params.get("id"));
-    } catch (NumberFormatException e) {
-      System.out.println("id를 정수형태로 입력해주세요.");
+    if (id == 0) {
+      System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
 
@@ -106,18 +90,10 @@ public class UsrArticleController {
   }
 
   public void actionDetail(Rq rq) {
-    Map<String, String> params = rq.getQueryParams();
+    int id = rq.getIntParam("id", 0);
 
-    if (!params.containsKey("id")) {
-      System.out.println("id를 입력해주세요.");
-      return;
-    }
-
-    int id;
-    try {
-      id = Integer.parseInt(params.get("id"));
-    } catch (NumberFormatException e) {
-      System.out.println("id를 정수형태로 입력해주세요.");
+    if (id == 0) {
+      System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
 
@@ -147,8 +123,11 @@ public class UsrArticleController {
     List<Article> filteredArticles = articles;
 
     if (params.containsKey("searchKeyword")) {
-      String searchKeyword = params.get("searchKeyword");
-      filteredArticles = new ArrayList<>();
+      String searchKeyword = rq.getParam("searchKeyword", "");
+
+      if (searchKeyword.length() > 0) {
+        filteredArticles = new ArrayList<>();
+      }
 
       for (Article article : articles) {
         boolean matched = article.title.contains(searchKeyword) || article.body.contains(searchKeyword);
@@ -161,7 +140,9 @@ public class UsrArticleController {
 
     List<Article> sortedArticles = filteredArticles;
 
-    boolean orderByIdDesc = true;
+    String orderBy = rq.getParam("orderBy", "idDesc");
+    boolean orderByIdDesc = orderBy.equals("idDesc");
+
     if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
       orderByIdDesc = false;
     }

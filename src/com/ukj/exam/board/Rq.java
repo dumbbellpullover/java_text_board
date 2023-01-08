@@ -13,6 +13,29 @@ class Rq {
     this.urlPath = Util.getUrlPathFromUrl(this.url);
   }
 
+  public int getIntParam(String paramName, int defaultValue) {
+
+    if(!queryParams.containsKey(paramName)) {
+      return defaultValue;
+    }
+
+    try {
+      return Integer.parseInt(queryParams.get(paramName));
+    }
+    catch( NumberFormatException e) {
+      return defaultValue;
+    }
+  }
+
+  public String getParam(String paramName, String defaultValue) {
+
+    if(!queryParams.containsKey(paramName)) {
+      return defaultValue;
+    }
+
+    return paramName;
+  }
+
   public Map<String, String> getQueryParams() {
     return this.queryParams;
   }
