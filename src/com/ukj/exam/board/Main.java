@@ -39,7 +39,23 @@ public class Main {
         System.out.println("-------------------");
         System.out.println("번호 / 제목");
 
-        List<Article> sortedArticles = articles;
+        // 검색 시작
+        List<Article> filteredArticles = articles;
+
+        if (params.containsKey("searchKeyword")) {
+          String searchKeyword = params.get("searchKeyword");
+          filteredArticles = new ArrayList<>();
+
+          for (Article article : articles) {
+            boolean matched = article.title.contains(searchKeyword) || article.body.contains(searchKeyword);
+            if (matched) {
+              filteredArticles.add(article);
+            }
+          }
+          // 검색 끝
+        }
+
+        List<Article> sortedArticles = filteredArticles;
 
         boolean orderByIdDesc = true;
         if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
