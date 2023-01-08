@@ -41,10 +41,10 @@ public class Main {
         actionUsrArticleDetail(rq, articles);
 
       } else if (rq.getUrlPath().equals("/usr/article/write")) {
-//        make /usr/article/write fucntion
         actionUsrArticleWrite(sc, articles, articleLastId);
         articleLastId++;
-
+      } else if (rq.getUrlPath().equals("/usr/article/modify")) { // 상세정보 출력
+        actionUsrArticleModify(sc, rq, articles);
       } else {
         System.out.printf("입력 된 명령어: %s\n", cmd);
       }
@@ -54,12 +54,45 @@ public class Main {
     sc.close();
   }
 
+  private static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+    Map<String, String> params = rq.getQueryParams();
+
+    if (!params.containsKey("id")) {
+      System.out.println("id를 입력해주세요.");
+      return;
+    }
+
+    int id;
+    try {
+      id = Integer.parseInt(params.get("id"));
+    } catch (NumberFormatException e) {
+      System.out.println("id를 정수형태로 입력해주세요.");
+      return;
+    }
+
+    if (id > articles.size()) {
+      System.out.println("게시물이 존재하지 않습니다.");
+      return;
+    }
+
+    Article article = articles.get(id - 1);
+
+    System.out.printf("새 제목: ");
+    article.title = sc.nextLine();
+    System.out.printf("새 내용: ");
+    article.body = sc.nextLine();
+
+    System.out.printf("%d번 게시물을 수정하였습니다.\n", article.id);
+
+  }
+
   private static void actionUsrArticleWrite(Scanner sc, List<Article> articles, int articleLastId) {
     System.out.println("== 게시물 등록 ==");
     System.out.print("제목: ");
     String title = sc.nextLine();
     System.out.print("내용: ");
     String body = sc.nextLine();
+
     int id = ++articleLastId;
 
     Article article = new Article(id, title, body);
@@ -77,7 +110,7 @@ public class Main {
       return;
     }
 
-    int id = 0;
+    int id;
     try {
       id = Integer.parseInt(params.get("id"));
     } catch (NumberFormatException e) {
@@ -85,12 +118,12 @@ public class Main {
       return;
     }
 
-    Article article = articles.get(id - 1);
-
     if (id > articles.size()) {
       System.out.println("게시물이 존재하지 않습니다.");
       return;
     }
+
+    Article article = articles.get(id - 1);
 
     System.out.println("== 게시물 상세 보기 ==");
     System.out.printf("번호: %d\n", article.id);
