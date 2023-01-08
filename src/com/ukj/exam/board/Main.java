@@ -1,8 +1,6 @@
 package com.ukj.exam.board;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
   static void makeTestData(List<Article> articles) {
@@ -14,7 +12,7 @@ public class Main {
     Scanner sc = new Scanner(System.in);
     int articleLastId = 0;
 
-    List<Article> articles = new ArrayList<>();
+    List<Article> articles = new ArrayList();
 
     makeTestData(articles);
 
@@ -29,10 +27,12 @@ public class Main {
       System.out.print("명령 > ");
       String cmd = sc.nextLine();
 
-      if (cmd.equals("exit")) {
+      Rq rq = new Rq(cmd);
+
+      if (rq.getUrlPath().equals("exit")) {
         break;
 
-      } else if (cmd.equals("/usr/article/list")) {
+      } else if (rq.getUrlPath().equals("/usr/article/list")) {
         System.out.println("== 게시물 리스트 ==");
         System.out.println("-------------------");
         System.out.println("번호 / 제목");
@@ -43,7 +43,7 @@ public class Main {
         }
         System.out.println("-------------------");
 
-      } else if (cmd.equals("/usr/article/detail")) {
+      } else if (rq.getUrlPath().equals("/usr/article/detail")) {
 
         if (articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
@@ -57,7 +57,7 @@ public class Main {
         System.out.printf("제목: %s\n", article.title);
         System.out.printf("내용: %s\n", article.body);
 
-      } else if (cmd.equals("/usr/article/write")) {
+      } else if (rq.getUrlPath().equals("/usr/article/write")) {
         System.out.println("== 게시물 등록 ==");
         System.out.print("제목: ");
         String title = sc.nextLine();
@@ -95,5 +95,52 @@ class Article {
   @Override
   public String toString() {
     return String.format("{id: %d, title: \"%s\", body: \"%s\"}", this.id, this.title, this.body);
+  }
+}
+
+class Rq {
+  String url;
+  Map<String, String> queryParams;
+  String urlPath;
+
+  Rq (String url) {
+    this.url = url;
+    this.queryParams = Util.getQueryParamsFromUrl(this.url);
+    this.urlPath = Util.getUrlPathFromUrl(this.url);
+  }
+
+  public Map<String, String> getQueryParams() {
+    return this.queryParams;
+  }
+
+  public String getUrlPath() {
+    return this.urlPath;
+  }
+}
+
+class Util {
+  static Map<String, String> getQueryParamsFromUrl(String url) {
+    Map<String, String> queryParams = new HashMap();
+    String[] urlBits = url.split("\\?", 2);
+
+    if (urlBits.length == 1) {
+      return queryParams;
+    }
+
+    for (String queryString : urlBits[1].split("&",2)) {
+      String[] params = queryString.split("=", 2);
+
+      if (params.length == 1) {
+        continue;
+      }
+
+      queryParams.put(params[0], params[1]);
+    }
+
+    return queryParams;
+  }
+
+  static String getUrlPathFromUrl(String url) {
+    return url.split("\\?")[0];
   }
 }
