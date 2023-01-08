@@ -47,7 +47,7 @@ public class UsrMemberController {
     System.out.printf("%d번째 회원이 생성되었습니다.\n", member.id);
   }
 
-  public void actionLogin() {
+  public void actionLogin(Rq rq) {
     System.out.printf("로그인 ID: ");
     String loginId = Container.sc.nextLine().trim();
 
@@ -75,6 +75,8 @@ public class UsrMemberController {
       System.out.println("PW가 일치하지 않습니다.");
       return;
     }
+
+    rq.setSessionAttr("loggedMember", member);
 
     System.out.printf("%s님, 환영합니다.\n", member.loginId);
   }

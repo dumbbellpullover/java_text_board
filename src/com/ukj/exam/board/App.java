@@ -9,12 +9,21 @@ public class App {
 
   void run() {
     Scanner sc = Container.sc;
+    Session session = Container.getSession();
 
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
 
     while (true) {
-      System.out.print("명령 > ");
+      Member loggedMember = (Member) session.getAttribute("loggedMember");
+
+      String promptName = "명령어";
+
+      if (loggedMember != null) {
+        promptName = loggedMember.loginId;
+      }
+
+      System.out.printf("%s > ", promptName);
       String cmd = sc.nextLine();
 
       Rq rq = new Rq(cmd);
@@ -42,7 +51,7 @@ public class App {
         Container.usrMemberController.actionJoin();
 
       } else if (rq.getUrlPath().equals("/usr/member/login")) {
-        Container.usrMemberController.actionLogin();
+        Container.usrMemberController.actionLogin(rq);
       } else {
         System.out.printf("입력 된 명령어: %s\n", cmd);
       }
