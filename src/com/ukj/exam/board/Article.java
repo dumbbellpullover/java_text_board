@@ -13,6 +13,9 @@ class Article {
 
   @Override
   public String toString() {
-    return String.format("{id: %d, title: \"%s\", body: \"%s\"}", this.id, this.title, this.body);
+    String loginId = this.title != null ? "\"" + this.title + "\"" : null;
+    String loginPw = this.body != null ? "\"" + this.body + "\"" : null;
+
+    return String.format("{id: %d, title: %s, body: %s}", this.id, this.title, this.body);
   }
 }

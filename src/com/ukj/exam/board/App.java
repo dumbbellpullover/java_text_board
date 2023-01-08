@@ -38,6 +38,9 @@ public class App {
       } else if (rq.getUrlPath().equals("/usr/article/delete")) { // 게시물 삭제
         Container.usrArticleController.actionDelete(rq);
 
+      } else if (rq.getUrlPath().equals("/usr/member/join")) {
+        Container.usrMemberController.actionJoin();
+
       } else {
         System.out.printf("입력 된 명령어: %s\n", cmd);
       }
