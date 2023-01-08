@@ -8,6 +8,7 @@ public class Main {
     articles.add(new Article(2, "제목2", "내용2"));
     articles.add(new Article(3, "제목3", "내용3"));
   }
+
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int articleLastId = 0;
@@ -28,23 +29,36 @@ public class Main {
       String cmd = sc.nextLine();
 
       Rq rq = new Rq(cmd);
+      Map<String, String> params = rq.getQueryParams();
 
       if (rq.getUrlPath().equals("exit")) {
         break;
 
-      } else if (rq.getUrlPath().equals("/usr/article/list")) {
+      } else if (rq.getUrlPath().equals("/usr/article/list")) { // 리스트 출력
         System.out.println("== 게시물 리스트 ==");
         System.out.println("-------------------");
         System.out.println("번호 / 제목");
 
-        for ( int i = articles.size() - 1; i >= 0; i--) {
-          Article article = articles.get(i);
-          System.out.printf("%d / %s\n", article.id, article.title);
+        boolean orderByIdDesc = true;
+        if (params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+          orderByIdDesc = false;
         }
+
+        if (orderByIdDesc) {
+          for (int i = articles.size() - 1; i >= 0; i--) {
+            Article article = articles.get(i);
+            System.out.printf("%d / %s\n", article.id, article.title);
+          }
+
+        } else {
+          for (Article article : articles) {
+            System.out.printf("%d / %s\n", article.id, article.title);
+          }
+        }
+
         System.out.println("-------------------");
 
-      } else if (rq.getUrlPath().equals("/usr/article/detail")) {
-        Map<String, String> params = rq.getQueryParams();
+      } else if (rq.getUrlPath().equals("/usr/article/detail")) { // 상세정보 출력
 
         if (!params.containsKey("id")) {
           System.out.println("id를 입력해주세요.");
@@ -117,7 +131,7 @@ class Rq {
   Map<String, String> queryParams;
   String urlPath;
 
-  Rq (String url) {
+  Rq(String url) {
     this.url = url;
     this.queryParams = Util.getQueryParamsFromUrl(this.url);
     this.urlPath = Util.getUrlPathFromUrl(this.url);
@@ -141,7 +155,7 @@ class Util {
       return queryParams;
     }
 
-    for (String queryString : urlBits[1].split("&",2)) {
+    for (String queryString : urlBits[1].split("&", 2)) {
       String[] params = queryString.split("=", 2);
 
       if (params.length == 1) {
