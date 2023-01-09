@@ -1,13 +1,17 @@
-package com.ukj.exam.board;
+package com.ukj.exam.board.vo;
+
+import com.ukj.exam.board.container.Container;
+import com.ukj.exam.board.session.Session;
+import com.ukj.exam.board.util.Util;
 
 import java.util.Map;
 
-class Rq {
-  String url;
-  Map<String, String> queryParams;
-  String urlPath;
+public class Rq {
+  private String url;
+  private Map<String, String> queryParams;
+  private String urlPath;
 
-  Rq(String url) {
+  public Rq(String url) {
     this.url = url;
     this.queryParams = Util.getQueryParamsFromUrl(this.url);
     this.urlPath = Util.getUrlPathFromUrl(this.url);
@@ -56,3 +60,4 @@ class Rq {
     session.removeAttribute(key);
   }
 }
+

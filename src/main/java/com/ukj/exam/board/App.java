@@ -1,12 +1,17 @@
 package com.ukj.exam.board;
 
+import com.ukj.exam.board.container.Container;
+import com.ukj.exam.board.session.Session;
+import com.ukj.exam.board.vo.Member;
+import com.ukj.exam.board.vo.Rq;
+
 import java.util.Map;
 import java.util.Scanner;
 
 public class App {
 
   void run() {
-    Scanner sc = Container.sc;
+    Scanner sc = Container.getSc();
     Session session = Container.getSession();
 
     System.out.println("== 게시판 v 0.1 ==");
@@ -18,7 +23,7 @@ public class App {
       String promptName = "명령어";
 
       if (loggedMember != null) {
-        promptName = loggedMember.loginId;
+        promptName = loggedMember.getLoginId();
       }
 
       System.out.printf("%s > ", promptName);
@@ -31,28 +36,28 @@ public class App {
         break;
 
       } else if (rq.getUrlPath().equals("/usr/article/list")) { // 리스트 출력
-        Container.usrArticleController.showList(rq);
+        Container.getUsrArticleController().showList(rq);
 
       } else if (rq.getUrlPath().equals("/usr/article/detail")) { // 상세정보 출력
-        Container.usrArticleController.actionDetail(rq);
+        Container.getUsrArticleController().actionDetail(rq);
 
       } else if (rq.getUrlPath().equals("/usr/article/write")) { // 게시물 입력
-        Container.usrArticleController.actionWrite();
+        Container.getUsrArticleController().actionWrite();
 
       } else if (rq.getUrlPath().equals("/usr/article/modify")) { // 게시물 수정
-        Container.usrArticleController.actionModify(rq);
+        Container.getUsrArticleController().actionModify(rq);
 
       } else if (rq.getUrlPath().equals("/usr/article/delete")) { // 게시물 삭제
-        Container.usrArticleController.actionDelete(rq);
+        Container.getUsrArticleController().actionDelete(rq);
 
       } else if (rq.getUrlPath().equals("/usr/member/join")) {
-        Container.usrMemberController.actionJoin();
+        Container.getUsrMemberController().actionJoin();
 
       } else if (rq.getUrlPath().equals("/usr/member/login")) {
-        Container.usrMemberController.actionLogin(rq);
+        Container.getUsrMemberController().actionLogin(rq);
 
       } else if (rq.getUrlPath().equals("/usr/member/logout")) {
-        Container.usrMemberController.actionLogout(rq);
+        Container.getUsrMemberController().actionLogout(rq);
 
       } else {
         System.out.printf("입력 된 명령어: %s\n", cmd);

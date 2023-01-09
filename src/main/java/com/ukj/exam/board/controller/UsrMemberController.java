@@ -1,20 +1,24 @@
-package com.ukj.exam.board;
+package com.ukj.exam.board.controller;
+
+import com.ukj.exam.board.container.Container;
+import com.ukj.exam.board.vo.Rq;
+import com.ukj.exam.board.vo.Member;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UsrMemberController {
-  int memberLastId;
-  List<Member> members;
+  private int memberLastId;
+  private List<Member> members;
 
-  UsrMemberController() {
+  public UsrMemberController() {
     memberLastId = 0;
     members = new ArrayList<>();
 
     makeTestData();
 
     if (members.size() > 0) {
-      memberLastId = members.get(members.size() - 1).id;
+      memberLastId = members.get(members.size() - 1).getId();
     }
   }
 
@@ -27,11 +31,11 @@ public class UsrMemberController {
   public void actionJoin() {
     System.out.println("== 회원 가입 ==");
     System.out.print("로그인 아이디: ");
-    String loginId = Container.sc.nextLine();
+    String loginId = Container.getSc().nextLine();
     System.out.print("로그인 패스워드: ");
-    String loginPw = Container.sc.nextLine();
+    String loginPw = Container.getSc().nextLine();
     System.out.print("로그인 PW 확인: ");
-    String loginPwConfirm = Container.sc.nextLine();
+    String loginPwConfirm = Container.getSc().nextLine();
 
     if (!loginPw.equals(loginPwConfirm)) {
       System.out.println("비밀번호가 일치하지 않습니다.");
@@ -43,13 +47,13 @@ public class UsrMemberController {
     Member member = new Member(id, loginId, loginPw);
     members.add(member);
 
-    System.out.printf("&s님 가입을 환영합니다.\n", member.loginId);
-    System.out.printf("%d번째 회원이 생성되었습니다.\n", member.id);
+    System.out.printf("&s님 가입을 환영합니다.\n", member.getLoginId());
+    System.out.printf("%d번째 회원이 생성되었습니다.\n", member.getId());
   }
 
   public void actionLogin(Rq rq) {
     System.out.printf("로그인 ID: ");
-    String loginId = Container.sc.nextLine().trim();
+    String loginId = Container.getSc().nextLine().trim();
 
     if (loginId.length() == 0) {
       System.out.println("로그인 ID를 입력해주세요.");
@@ -64,26 +68,26 @@ public class UsrMemberController {
     }
 
     System.out.printf("로그인 PW: ");
-    String loginPw = Container.sc.nextLine().trim();
+    String loginPw = Container.getSc().nextLine().trim();
 
     if (loginPw.length() == 0) {
       System.out.println("로그인 PW를 입력해주세요.");
       return;
     }
 
-    if (!member.loginPw.equals(loginPw)) {
+    if (!member.getLoginPw().equals(loginPw)) {
       System.out.println("PW가 일치하지 않습니다.");
       return;
     }
 
     rq.setSessionAttr("loggedMember", member);
 
-    System.out.printf("%s님, 환영합니다.\n", member.loginId);
+    System.out.printf("%s님, 환영합니다.\n", member.getLoginId());
   }
 
   private Member getMemberLoginId(String loginId) {
     for (Member member : members) {
-      if (member.loginId.equals(loginId)) {
+      if (member.getLoginId().equals(loginId)) {
         return member;
       }
     }
@@ -92,7 +96,7 @@ public class UsrMemberController {
   }
 
   public void actionLogout(Rq rq) {
-    Member loggedMember = (Member) Container.session.getAttribute("loggedMember");
+    Member loggedMember = (Member) Container.getSession().getAttribute("loggedMember");
 
     if (loggedMember == null) {
       System.out.println("로그인 후 이용해주세요.");
