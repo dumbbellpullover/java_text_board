@@ -96,15 +96,7 @@ public class UsrMemberController {
   }
 
   public void actionLogout(Rq rq) {
-    Member loggedMember = (Member) Container.getSession().getAttribute("loggedMember");
-
-    if (loggedMember == null) {
-      System.out.println("로그인 후 이용해주세요.");
-      return;
-
-    } else {
-      rq.removeSessionAttr("loggedMember");
-    }
+    rq.logout();
 
     System.out.println("로그아웃 되었습니다.");
   }
