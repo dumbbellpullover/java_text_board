@@ -10,12 +10,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class App {
+  private void forTestLoginByMemberId(int id) {
+    Member member = Container.getMemberService().getMemberById(id);
+    new Rq().login(member);
+  } // 자동 로그인 구현
 
-  void run() {
+  public void run() {
     Scanner sc = Container.getSc();
 
     System.out.println("== 게시판 v 0.1 ==");
     System.out.println("== 프로그램 시작 ==");
+
+    forTestLoginByMemberId(1);
 
     while (true) {
       Rq rq = new Rq();
