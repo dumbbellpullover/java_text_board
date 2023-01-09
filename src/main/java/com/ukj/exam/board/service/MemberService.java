@@ -1,7 +1,6 @@
 package com.ukj.exam.board.service;
 
 import com.ukj.exam.board.repository.MemberRepository;
-import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Member;
 
 public class MemberService {
@@ -17,7 +16,6 @@ public class MemberService {
     for (int i = 1; i <= 3; i++) {
       String loginId = "user" + i;
       String loginPw = "user" + i;
-      String regDate = Util.getNowDateStr();
 
       join(loginId, loginPw);
     }

@@ -99,11 +99,7 @@ public class UsrArticleController {
 
     int id = articleService.write(1, loggedMemberId, title, body);
 
-    Article article = new Article(id, 1, loggedMemberId, title, body, regDate, updateDate);
-    articles.add(article);
-
-    System.out.println("생성된 게시물 객체: " + article);
-    System.out.printf("%d번 게시물이 등록되었습니다.\n", article.getId());
+    System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
   }
 
   public void actionDetail(Rq rq) {
@@ -123,8 +119,8 @@ public class UsrArticleController {
 
     System.out.println("== 게시물 상세 보기 ==");
     System.out.printf("번호: %d\n", article.getId());
-    System.out.printf("작성날짜: %d\n", article.getRegDate());
-    System.out.printf("수정날짜: %d\n", article.getUpdateDate());
+    System.out.printf("작성날짜: %s\n", article.getRegDate());
+    System.out.printf("수정날짜: %s\n", article.getUpdateDate());
     System.out.printf("제목: %s\n", article.getTitle());
     System.out.printf("내용: %s\n", article.getBody());
 
