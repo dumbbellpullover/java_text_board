@@ -8,7 +8,7 @@ public class BoardService {
   private BoardRepository boardRepository;
 
   public BoardService() {
-    boardRepository = Container.getBoardRepository();
+    boardRepository = Container.getBoardRepository(); // containor 로 가져와야
   }
   public Board getBoardById(int boardId) {
     return boardRepository.getBoardById(boardId);

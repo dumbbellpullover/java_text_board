@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class Board {
   private int id;
-  private String regDate;
   private String updateDate;
   private String name;
   private String code; // 게시판을 코드로 분류
+  private String regDate;
 }

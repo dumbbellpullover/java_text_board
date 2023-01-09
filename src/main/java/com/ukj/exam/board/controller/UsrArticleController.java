@@ -60,9 +60,12 @@ public class UsrArticleController {
     }
 
     System.out.printf("새 제목: ");
-    foundArticle.setTitle(Container.getSc().nextLine());
+    String title = Container.getSc().nextLine();
     System.out.printf("새 내용: ");
-    foundArticle.setBody(Container.getSc().nextLine());
+    String body = Container.getSc().nextLine();
+
+
+    articleService.modify(foundArticle.getId(), title, body);
 
     System.out.printf("%d번 게시물을 수정하였습니다.\n", foundArticle.getId());
 
@@ -89,12 +92,14 @@ public class UsrArticleController {
     String title = Container.getSc().nextLine();
     System.out.print("내용: ");
     String body = Container.getSc().nextLine();
+    String regDate = Util.getNowDateStr();
+    String updateDate = regDate;
 
     int loggedMemberId = rq.getLoggedMemberID();
 
     int id = articleService.write(1, loggedMemberId, title, body);
 
-    Article article = new Article(id, 1, loggedMemberId, title, body);
+    Article article = new Article(id, 1, loggedMemberId, title, body, regDate, updateDate);
     articles.add(article);
 
     System.out.println("생성된 게시물 객체: " + article);
@@ -118,6 +123,8 @@ public class UsrArticleController {
 
     System.out.println("== 게시물 상세 보기 ==");
     System.out.printf("번호: %d\n", article.getId());
+    System.out.printf("작성날짜: %d\n", article.getRegDate());
+    System.out.printf("수정날짜: %d\n", article.getUpdateDate());
     System.out.printf("제목: %s\n", article.getTitle());
     System.out.printf("내용: %s\n", article.getBody());
 
@@ -129,7 +136,7 @@ public class UsrArticleController {
 
     System.out.println("== 게시물 리스트 ==");
     System.out.println("-------------------");
-    System.out.println("번호 / 제목");
+    System.out.println("번호 / 제목 / 수정 날짜 및 시간");
 
     // 검색 시작
     List<Article> filteredArticles = articles;
@@ -164,19 +171,10 @@ public class UsrArticleController {
     }
 
     for (Article article : sortedArticles) {
-      System.out.printf("%d / %s\n", article.getId(), article.getTitle());
+      System.out.printf("%d / %s / %s\n", article.getId(), article.getTitle(), article.getUpdateDate());
     }
 
     System.out.println("-------------------");
   }
 
-  private Article getArticleById(int id) {
-    for (Article article : articles) {
-      if (article.getId() == id) {
-        return article;
-      }
-    }
-
-    return null;
-  }
 }

@@ -1,11 +1,20 @@
 package com.ukj.exam.board.util;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Util {
+  public static String getNowDateStr() {
+    SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    String dateStr = format1.format(System.currentTimeMillis());
+
+    return dateStr;
+  }
+
   public static Map<String, String> getQueryParamsFromUrl(String url) {
     Map<String, String> queryParams = new HashMap();
     String[] urlBits = url.split("\\?", 2);

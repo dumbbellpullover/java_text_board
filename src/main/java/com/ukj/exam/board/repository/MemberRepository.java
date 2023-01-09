@@ -1,5 +1,6 @@
 package com.ukj.exam.board.repository;
 
+import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Member;
 
 import java.util.ArrayList;
@@ -17,7 +18,9 @@ public class MemberRepository {
 
   public int join(String loginId, String loginPw) {
     int id = lastId + 1;
-    Member member = new Member(id, loginId, loginPw);
+    String regDate = Util.getNowDateStr();
+    String updateDate = regDate;
+    Member member = new Member(id, loginId, loginPw, regDate, updateDate);
     members.add(member);
     lastId = id;
 
