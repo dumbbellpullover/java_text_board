@@ -9,8 +9,8 @@ class Rq {
 
   Rq(String url) {
     this.url = url;
-    this.queryParams = com.ukj.exam.board.Util.getQueryParamsFromUrl(this.url);
-    this.urlPath = com.ukj.exam.board.Util.getUrlPathFromUrl(this.url);
+    this.queryParams = Util.getQueryParamsFromUrl(this.url);
+    this.urlPath = Util.getUrlPathFromUrl(this.url);
   }
 
   public int getIntParam(String paramName, int defaultValue) {
@@ -45,13 +45,13 @@ class Rq {
   }
 
   public void setSessionAttr(String key, Object value) {
-    com.ukj.exam.board.Session session = com.ukj.exam.board.Container.getSession();
+    Session session = Container.getSession();
 
     session.setAttribute(key, value);
   }
 
   public void removeSessionAttr(String key) {
-    com.ukj.exam.board.Session session = com.ukj.exam.board.Container.getSession();
+    Session session = Container.getSession();
 
     session.removeAttribute(key);
   }

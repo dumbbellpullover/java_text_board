@@ -1,21 +1,17 @@
 package com.ukj.exam.board;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@ToString // @Data 만 써도 상관없음
 class Article {
   int id;
   String title;
   String body;
 
-  Article(int id, String title, String body) {
-    this.id = id;
-    this.title = title;
-    this.body = body;
-  }
-
-  @Override
-  public String toString() {
-    String loginId = this.title != null ? "\"" + this.title + "\"" : null;
-    String loginPw = this.body != null ? "\"" + this.body + "\"" : null;
-
-    return String.format("{id: %d, title: %s, body: %s}", this.id, this.title, this.body);
-  }
 }
