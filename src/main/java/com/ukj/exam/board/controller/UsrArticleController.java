@@ -57,16 +57,18 @@ public class UsrArticleController {
 
   }
 
-  public void actionWrite() {
+  public void actionWrite(Rq rq) {
     System.out.println("== 게시물 등록 ==");
     System.out.print("제목: ");
     String title = Container.getSc().nextLine();
     System.out.print("내용: ");
     String body = Container.getSc().nextLine();
 
-    int id = articleService.write(1, title, body);
+    int loggedMemberId = rq.getLoggedMemberID();
 
-    Article article = new Article(id, 1, title, body);
+    int id = articleService.write(1, loggedMemberId, title, body);
+
+    Article article = new Article(id, 1, loggedMemberId, title, body);
     articles.add(article);
 
     System.out.println("생성된 게시물 객체: " + article);

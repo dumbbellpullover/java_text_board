@@ -46,7 +46,7 @@ public class App {
         Container.getUsrArticleController().actionDetail(rq);
 
       } else if (rq.getUrlPath().equals("/usr/article/write")) { // 게시물 입력
-        Container.getUsrArticleController().actionWrite();
+        Container.getUsrArticleController().actionWrite(rq);
 
       } else if (rq.getUrlPath().equals("/usr/article/modify")) { // 게시물 수정
         Container.getUsrArticleController().actionModify(rq);

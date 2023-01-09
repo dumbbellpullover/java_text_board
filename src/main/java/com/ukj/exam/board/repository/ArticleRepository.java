@@ -18,9 +18,9 @@ public class ArticleRepository {
     return articles;
   }
 
-  public int write(int boardId, String title, String body) {
+  public int write(int boardId, int memberId, String title, String body) {
     int id = lastId + 1;
-    Article article = new Article(id, boardId, title, body);
+    Article article = new Article(id, boardId, memberId, title, body);
     articles.add(article);
     lastId = id;
 

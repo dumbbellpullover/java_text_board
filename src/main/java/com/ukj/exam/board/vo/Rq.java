@@ -86,5 +86,9 @@ public class Rq {
   public void logout() {
     removeSessionAttr("loggedMember");
   }
+
+  public int getLoggedMemberID() {
+    return getLoggedMember().getId();
+  }
 }
 
