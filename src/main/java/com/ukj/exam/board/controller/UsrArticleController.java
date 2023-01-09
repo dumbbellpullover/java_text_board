@@ -64,9 +64,9 @@ public class UsrArticleController {
     System.out.print("내용: ");
     String body = Container.getSc().nextLine();
 
-    int id = articleService.write(title, body);
+    int id = articleService.write(1, title, body);
 
-    Article article = new Article(id, title, body);
+    Article article = new Article(id, 1, title, body);
     articles.add(article);
 
     System.out.println("생성된 게시물 객체: " + article);
