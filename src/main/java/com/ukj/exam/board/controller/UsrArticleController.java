@@ -21,8 +21,13 @@ public class UsrArticleController {
     articleService  = Container.getArticleService();
     boardService = Container.getBoardService();
     articles = articleService.getArticles();
-    articleService.makeTestData();
+    makeTestData();
   }
+
+  public void makeTestData() {
+      boardService.makeTestData();
+      articleService.makeTestData();
+    }
 
   public void actionDelete(Rq rq) {
     int id = rq.getIntParam("id", 0);

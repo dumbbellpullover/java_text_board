@@ -11,7 +11,6 @@ public class MemberService {
     memberRepository = new MemberRepository(); // new 로 꼭 만들어야
   }
 
-
   public void makeTestData() {
     for (int i = 1; i <= 3; i++) {
       String loginId = "user" + i;
