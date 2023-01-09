@@ -1,9 +1,11 @@
 package com.ukj.exam.board.controller;
 
 import com.ukj.exam.board.service.ArticleService;
+import com.ukj.exam.board.service.BoardService;
 import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Article;
 import com.ukj.exam.board.container.Container;
+import com.ukj.exam.board.vo.Board;
 import com.ukj.exam.board.vo.Rq;
 
 import java.util.ArrayList;
@@ -12,10 +14,12 @@ import java.util.Map;
 
 public class UsrArticleController {
   private ArticleService articleService;
+  private BoardService boardService;
   private List<Article> articles;
 
   public UsrArticleController() {
     articleService  = Container.getArticleService();
+    boardService = Container.getBoardService();
     articles = articleService.getArticles();
     articleService.makeTestData();
   }
@@ -25,6 +29,13 @@ public class UsrArticleController {
 
     if (id == 0) {
       System.out.println("id를 올바르게 입력해주세요.");
+      return;
+    }
+
+    Article foundArticle = articleService.getArticleById(id);
+
+    if (foundArticle == null) {
+      System.out.println("해당 게시물은 존재하지 않습니다.");
       return;
     }
 
@@ -58,7 +69,22 @@ public class UsrArticleController {
   }
 
   public void actionWrite(Rq rq) {
-    System.out.println("== 게시물 등록 ==");
+
+    int boardId = rq.getIntParam("boardId", 0);
+
+    if (boardId == 0) {
+      System.out.println("boardId를 올바르게 입력해주세요.");
+      return;
+    }
+
+    Board foundBoard = boardService.getBoardById(boardId);
+
+    if (foundBoard == null) {
+      System.out.println("존재하지 않는 게시판입니다.");
+      return;
+    }
+
+    System.out.printf("== %s 게시판 글 작성 ==\n", foundBoard.getName());
     System.out.print("제목: ");
     String title = Container.getSc().nextLine();
     System.out.print("내용: ");
