@@ -1,11 +1,12 @@
 package com.ukj.exam.board;
 
 import com.ukj.exam.board.container.Container;
-import com.ukj.exam.board.session.Session;
+import com.ukj.exam.board.interceptor.Interceptor;
 import com.ukj.exam.board.vo.Member;
 import com.ukj.exam.board.vo.Rq;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -30,6 +31,10 @@ public class App {
       String cmd = sc.nextLine();
 
       rq.setCommand(cmd);
+
+      if (runInterceptors(rq) == false) {
+        continue; // while문 맨 처음으로
+      }
 
       if (rq.getUrlPath().equals("exit")) {
         break;
@@ -65,5 +70,19 @@ public class App {
 
     System.out.println("== 프로그램 종료 ==");
     sc.close();
+  }
+
+  private boolean runInterceptors(Rq rq) {
+    List<Interceptor> interceptors = new ArrayList<>();
+
+    interceptors.add(Container.getNeedLoginInterceptor());
+    interceptors.add(Container.getNeedLogoutInterceptor());
+
+    for (Interceptor interceptor : interceptors) {
+      if (!interceptor.run(rq)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

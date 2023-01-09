@@ -35,7 +35,7 @@ public class UsrMemberController {
 
     int id = memberService.join(loginId, loginPw);
 
-    System.out.printf("%s님 가입을 환영합니다.\n", loginId);
+    System.out.printf("&s님 가입을 환영합니다.\n", loginId);
     System.out.printf("%d번째 회원이 생성되었습니다.\n", id);
   }
 
@@ -68,18 +68,17 @@ public class UsrMemberController {
       return;
     }
 
-    rq.setSessionAttr("loggedMember", member);
+    rq.login(member);
 
     System.out.printf("%s님, 환영합니다.\n", member.getLoginId());
   }
 
   public void actionLogout(Rq rq) {
-    rq.logout();
-
     if (!rq.isLogged()) {
       System.out.println("로그인 후 이용해주세요.");
     }
 
+    rq.logout();
     System.out.println("로그아웃 되었습니다.");
   }
 }
