@@ -1,6 +1,7 @@
 package com.ukj.exam.board.controller;
 
 import com.ukj.exam.board.container.Container;
+import com.ukj.exam.board.service.MemberService;
 import com.ukj.exam.board.vo.Rq;
 import com.ukj.exam.board.vo.Member;
 
@@ -8,24 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsrMemberController {
-  private int memberLastId;
-  private List<Member> members;
+
+  private MemberService memberService;
 
   public UsrMemberController() {
-    memberLastId = 0;
-    members = new ArrayList<>();
+    memberService = Container.getMemberService();
 
-    makeTestData();
+    memberService.makeTestData();
 
-    if (members.size() > 0) {
-      memberLastId = members.get(members.size() - 1).getId();
-    }
-  }
-
-  void makeTestData() {
-    for (int i = 1; i <= 3; i++) {
-      members.add(new Member(i, "user" + i, "pw" + i));
-    }
   }
 
   public void actionJoin() {
@@ -42,13 +33,10 @@ public class UsrMemberController {
       return;
     }
 
-    int id = ++memberLastId;
+    int id = memberService.join(loginId, loginPw);
 
-    Member member = new Member(id, loginId, loginPw);
-    members.add(member);
-
-    System.out.printf("&s님 가입을 환영합니다.\n", member.getLoginId());
-    System.out.printf("%d번째 회원이 생성되었습니다.\n", member.getId());
+    System.out.printf("%s님 가입을 환영합니다.\n", loginId);
+    System.out.printf("%d번째 회원이 생성되었습니다.\n", id);
   }
 
   public void actionLogin(Rq rq) {
@@ -60,7 +48,7 @@ public class UsrMemberController {
       return;
     }
 
-    Member member = getMemberLoginId(loginId);
+    Member member = memberService.getMemberByLoginId(loginId);
 
     if (member == null) {
       System.out.println("해당 회원은 존재하지 않습니다.");
@@ -85,18 +73,12 @@ public class UsrMemberController {
     System.out.printf("%s님, 환영합니다.\n", member.getLoginId());
   }
 
-  private Member getMemberLoginId(String loginId) {
-    for (Member member : members) {
-      if (member.getLoginId().equals(loginId)) {
-        return member;
-      }
-    }
-
-    return null;
-  }
-
   public void actionLogout(Rq rq) {
     rq.logout();
+
+    if (!rq.isLogged()) {
+      System.out.println("로그인 후 이용해주세요.");
+    }
 
     System.out.println("로그아웃 되었습니다.");
   }
