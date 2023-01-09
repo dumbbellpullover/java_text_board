@@ -1,5 +1,6 @@
 package com.ukj.exam.board.controller;
 
+import com.ukj.exam.board.service.ArticleService;
 import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Article;
 import com.ukj.exam.board.container.Container;
@@ -10,24 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 public class UsrArticleController {
-  private int articleLastId;
+  private ArticleService articleService;
   private List<Article> articles;
 
   public UsrArticleController() {
-    articleLastId = 0;
-    articles = new ArrayList<>();
-
-    makeTestData();
-
-    if (articles.size() > 0) {
-      articleLastId = articles.get(articles.size() - 1).getId();
-    }
-  }
-
-  void makeTestData() {
-    for (int i = 1; i <= 100; i++) {
-      articles.add(new Article(i, "제목" + i, "내용" + i));
-    }
+    articleService  = Container.getArticleService();
+    articles = articleService.getArticles();
+    articleService.makeTestData();
   }
 
   public void actionDelete(Rq rq) {
@@ -38,14 +28,8 @@ public class UsrArticleController {
       return;
     }
 
-    Article foundArticle = getArticleById(id);
+    articleService.deleteArticleById(id);
 
-    if (foundArticle == null) {
-      System.out.println("해당 게시물은 존재하지 않습니다.");
-      return;
-    }
-
-    articles.remove(foundArticle);
     System.out.printf("%d번 게시물을 삭제하였습니다.\n", id);
   }
 
@@ -57,7 +41,7 @@ public class UsrArticleController {
       return;
     }
 
-    Article foundArticle = getArticleById(id);
+    Article foundArticle = articleService.getArticleById(id);
 
     if (foundArticle == null) {
       System.out.println("해당 게시물은 존재하지 않습니다.");
@@ -80,7 +64,7 @@ public class UsrArticleController {
     System.out.print("내용: ");
     String body = Container.getSc().nextLine();
 
-    int id = ++articleLastId;
+    int id = articleService.write(title, body);
 
     Article article = new Article(id, title, body);
     articles.add(article);
