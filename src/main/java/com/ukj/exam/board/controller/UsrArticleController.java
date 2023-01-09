@@ -38,16 +38,11 @@ public class UsrArticleController {
       return;
     }
 
-    Article foundArticle = null;
+    Article foundArticle = getArticleById(id);
 
-    for (Article article : articles) {
-      if (article.getId() == id) {
-        foundArticle = article;
-        break;
-      } else if (article.getId() != id) {
-        System.out.println("해당 게시물은 존재하지 않습니다.");
-        return;
-      }
+    if (foundArticle == null) {
+      System.out.println("해당 게시물은 존재하지 않습니다.");
+      return;
     }
 
     articles.remove(foundArticle);
@@ -62,19 +57,19 @@ public class UsrArticleController {
       return;
     }
 
-    if (id > articles.size()) {
-      System.out.println("게시물이 존재하지 않습니다.");
+    Article foundArticle = getArticleById(id);
+
+    if (foundArticle == null) {
+      System.out.println("해당 게시물은 존재하지 않습니다.");
       return;
     }
 
-    Article article = articles.get(id - 1);
-
     System.out.printf("새 제목: ");
-    article.setTitle(Container.getSc().nextLine());
+    foundArticle.setTitle(Container.getSc().nextLine());
     System.out.printf("새 내용: ");
-    article.setBody(Container.getSc().nextLine());
+    foundArticle.setBody(Container.getSc().nextLine());
 
-    System.out.printf("%d번 게시물을 수정하였습니다.\n", article.getId());
+    System.out.printf("%d번 게시물을 수정하였습니다.\n", foundArticle.getId());
 
   }
 
@@ -161,6 +156,15 @@ public class UsrArticleController {
     }
 
     System.out.println("-------------------");
+  }
 
+  private Article getArticleById(int id) {
+    for (Article article : articles) {
+      if (article.getId() == id) {
+        return article;
+      }
+    }
+
+    return null;
   }
 }
