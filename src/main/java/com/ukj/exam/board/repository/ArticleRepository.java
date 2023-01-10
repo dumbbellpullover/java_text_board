@@ -2,7 +2,6 @@ package com.ukj.exam.board.repository;
 
 import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Article;
-import com.ukj.exam.board.vo.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,19 @@ public class ArticleRepository {
     this.articles = new ArrayList();
   }
 
-  public List<Article> getArticles() {
+  public List<Article> getArticles(int boardId) {
+    if (boardId == 0) {
+      return articles;
+    }
+
+    List<Article> filteredArticles = new ArrayList<>();
+
+    for (Article article : articles) {
+      if (article.getBoardId() == boardId) {
+        filteredArticles.add(article);
+      }
+    }
+
     return articles;
   }
 

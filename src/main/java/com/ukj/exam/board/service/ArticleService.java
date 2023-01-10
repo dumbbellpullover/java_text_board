@@ -18,8 +18,7 @@ public class ArticleService {
     for (int i = 1; i <= 10; i++) {
       String title = "제목" + i;
       String body = "내용" + i;
-      write(1, 1, title, body);
-      write(2, 2, title, body);
+      write(i % 2 + 1, i % 2 + 1, title, body);
     }
   }
 
@@ -27,8 +26,8 @@ public class ArticleService {
     return articleRepository.write(boardId, memberId, title, body);
   }
 
-  public List<Article> getArticles() {
-    return articleRepository.getArticles();
+  public List<Article> getArticles(int boardId) {
+    return articleRepository.getArticles(boardId);
   }
 
   public Article getArticleById(int id) {

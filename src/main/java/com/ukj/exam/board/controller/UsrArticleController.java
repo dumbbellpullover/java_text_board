@@ -23,7 +23,6 @@ public class UsrArticleController {
     boardService = Container.getBoardService();
     articleService  = Container.getArticleService();
     memberService = Container.getMemberService();
-    articles = articleService.getArticles();
     makeTestData();
   }
 
@@ -138,12 +137,25 @@ public class UsrArticleController {
   public void showList(Rq rq) {
     Map<String, String> params = rq.getQueryParams();
 
-    System.out.println("== 게시물 리스트 ==");
+    Board board = null;
+    int boardId = rq.getIntParam("boardId", 0);
+
+    if (boardId != 0) {
+      board = boardService.getBoardById(boardId);
+    }
+
+    if (board == null && boardId > 0) {
+      System.out.println("해당 게시판 번호는 존재하지 않습니다.");
+      return;
+    }
+
+    List<Article> filteredArticles = articleService.getArticles(boardId);
+
+    String boardName = board == null ? "전체" : board.getName();
+
+    System.out.printf("== %s 게시물 리스트 ==\n", boardName);
     System.out.println("-------------------");
     System.out.println("번호 / 게시판 / 작성자 / 제목 / 수정 날짜 및 시간");
-
-    // 검색 시작
-    List<Article> filteredArticles = articles;
 
     if (params.containsKey("searchKeyword")) {
       String searchKeyword = rq.getParam("searchKeyword", "");
@@ -175,10 +187,10 @@ public class UsrArticleController {
     }
 
     for (Article article : sortedArticles) {
-      String boardName = getBoardNameByBoardId(article.getBoardId());
+      String articleBoardName = getBoardNameByBoardId(article.getBoardId());
       String writeName = getWriteNameByBoardId(article.getBoardId());
 
-      System.out.printf("%d / %s / %s / %s / %s\n", article.getId(), boardName, writeName, article.getTitle(), article.getUpdateDate());
+      System.out.printf("%d / %s / %s / %s / %s\n", article.getId(), articleBoardName, writeName, article.getTitle(), article.getUpdateDate());
     }
 
     System.out.println("-------------------");
