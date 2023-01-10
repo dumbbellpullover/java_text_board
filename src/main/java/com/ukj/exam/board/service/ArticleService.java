@@ -47,4 +47,8 @@ public class ArticleService {
   public void modify(int id, String title, String body) {
     articleRepository.modify(id, title, body);
   }
+
+  public void increaseHitCount(int id) {
+    articleRepository.increaseHitCount(id);
+  }
 }
