@@ -2,7 +2,6 @@ package com.ukj.exam.board.repository;
 
 import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Article;
-import com.ukj.exam.board.vo.Board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +19,7 @@ public class ArticleRepository {
     return articles;
   }
 
-  public List<Article> getArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderBy) {
-
-    if ( boardId == 0 && searchKeyword.length() == 0 ) {
-      return articles;
-    }
+  public List<Article> getArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderBy, int limitStart, int limitCount) {
 
     List<Article> filteredArticles = new ArrayList<>();
 
@@ -41,10 +36,36 @@ public class ArticleRepository {
     }
 
     for (Article article : articles) {
+      if (article.getBoardId() == boardId) {
+        filteredArticles.add(article);
+      }
+    }
+
+    int dataIndex = 0;
+
+    List<Article> sortedArticles = articles;
+
+    boolean orderByIdDesc = orderBy.equals("idDesc");
+
+    if (orderByIdDesc) {
+      sortedArticles = Util.reverseList(sortedArticles);
+    }
+
+    for ( Article article : sortedArticles ) {
       if (boardId != 0) {
         if (article.getBoardId() != boardId) {
           continue;
         }
+      }
+
+      if (dataIndex >= limitStart) {
+        filteredArticles.add(article);
+      }
+
+      dataIndex++;
+
+      if (filteredArticles.size() == limitCount) {
+        break;
       }
 
       if (searchKeyword.length() > 0) {
@@ -66,16 +87,6 @@ public class ArticleRepository {
         }
       }
 
-    }
-
-    boolean orderByIdDesc = false;
-
-    if (orderBy.equals("idDesc")) {
-      orderByIdDesc = true;
-    }
-
-    if (orderByIdDesc) {
-      filteredArticles = Util.reverseList(filteredArticles);
     }
 
     return filteredArticles;

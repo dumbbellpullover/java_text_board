@@ -135,10 +135,9 @@ public class UsrArticleController {
   }
 
   public void showList(Rq rq) {
+    int page = rq.getIntParam("page", 1);
+    int pageItemCount = 10;
     int boardId = rq.getIntParam("boardId", 0);
-
-    Map<String, String> params = rq.getQueryParams();
-
     String searchKeyword = rq.getParam("searchKeyword", "");
     String searchKeywordTypeCode = rq.getParam("searchKeywordTypeCode", "");
     String orderBy = rq.getParam("orderBy", "idDesc");
@@ -153,7 +152,7 @@ public class UsrArticleController {
       return;
     }
 
-    List<Article> filteredArticles = articleService.getArticles(boardId, searchKeyword, searchKeywordTypeCode, orderBy);
+    List<Article> filteredArticles = articleService.getArticles(boardId, searchKeyword, searchKeywordTypeCode, orderBy, page, pageItemCount);
 
     String boardName = board == null ? "전체" : board.getName();
 

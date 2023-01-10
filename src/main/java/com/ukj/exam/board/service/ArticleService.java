@@ -29,8 +29,10 @@ public class ArticleService {
     return articleRepository.getArticles();
   }
 
-  public List<Article> getArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderBy) {
-    return articleRepository.getArticles(boardId, searchKeyword, searchKeywordTypeCode, orderBy);
+  public List<Article> getArticles(int boardId, String searchKeyword, String searchKeywordTypeCode, String orderBy, int page, int pageItemCount) {
+    int limitStart = (page - 1) * pageItemCount;
+    int limitCount = pageItemCount;
+    return articleRepository.getArticles(boardId, searchKeyword, searchKeywordTypeCode, orderBy, limitStart, limitCount);
   }
 
   public Article getArticleById(int id) {
