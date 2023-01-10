@@ -10,21 +10,19 @@ public class Util {
   public static String getNowDateStr() {
     SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    String dateStr = format1.format(System.currentTimeMillis());
-
-    return dateStr;
+    return format1.format(System.currentTimeMillis());
   }
 
   public static Map<String, String> getQueryParamsFromUrl(String url) {
-    Map<String, String> queryParams = new HashMap();
+    Map<String, String> queryParams = new HashMap<>();
     String[] urlBits = url.split("\\?", 2);
 
     if (urlBits.length == 1) {
       return queryParams;
     }
 
-    for (String queryString : urlBits[1].split("&", 2)) {
-      String[] params = queryString.split("=", 2);
+    for (String queryString : urlBits[1].split("&")) {
+      String[] params = queryString.split("=");
 
       if (params.length == 1) {
         continue;
@@ -37,7 +35,7 @@ public class Util {
   }
 
   public static String getUrlPathFromUrl(String url) {
-    return url.split("\\?", 2)[0];
+    return url.split("\\?")[0];
   }
 
   public static <T> List<T> reverseList(List<T> list) {

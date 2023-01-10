@@ -35,7 +35,12 @@ public class Rq {
       return defaultValue;
     }
 
-    return paramName;
+    try {
+      return queryParams.get(paramName);
+    }
+    catch( NumberFormatException e) {
+      return defaultValue;
+    }
   }
 
   public Map<String, String> getQueryParams() {
