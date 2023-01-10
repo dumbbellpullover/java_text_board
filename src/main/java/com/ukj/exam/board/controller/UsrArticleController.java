@@ -103,7 +103,7 @@ public class UsrArticleController {
 
     int loggedMemberId = rq.getLoggedMemberID();
 
-    int id = articleService.write(foundBoard.getId(), loggedMemberId, title, body);
+    int id = articleService.write(foundBoard.getId(), loggedMemberId, title, body, 0);
 
     System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
   }
@@ -158,13 +158,13 @@ public class UsrArticleController {
 
     System.out.printf("== %s 게시물 리스트(%d건) ==\n", boardName, filteredArticles.size());
     System.out.println("-------------------");
-    System.out.println("번호 / 게시판 / 작성자 / 제목 / 수정 날짜 및 시간");
+    System.out.println("번호 / 게시판 / 작성자 / 제목 / 수정 날짜 및 시간 / 조회수");
 
     for (Article article : filteredArticles) {
       String articleBoardName = getBoardNameByBoardId(article.getBoardId());
       String writeName = getWriteNameByBoardId(article.getBoardId());
 
-      System.out.printf("%d / %s / %s / %s / %s\n", article.getId(), articleBoardName, writeName, article.getTitle(), article.getUpdateDate());
+      System.out.printf("%d / %s / %s / %s / %s / %d\n", article.getId(), articleBoardName, writeName, article.getTitle(), article.getUpdateDate(), article.getHitCount());
     }
 
     System.out.println("-------------------");

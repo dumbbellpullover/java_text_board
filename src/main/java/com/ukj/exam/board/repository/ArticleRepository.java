@@ -23,18 +23,6 @@ public class ArticleRepository {
 
     List<Article> filteredArticles = new ArrayList<>();
 
-    if (searchKeyword.length() > 0) {
-      filteredArticles = new ArrayList<>();
-
-      for (Article article : articles) {
-        boolean matched = article.getTitle().contains(searchKeyword) || article.getBody().contains(searchKeyword);
-
-        if (matched) {
-          filteredArticles.add(article);
-        }
-      }
-    }
-
     for (Article article : articles) {
       if (article.getBoardId() == boardId) {
         filteredArticles.add(article);
@@ -92,11 +80,11 @@ public class ArticleRepository {
     return filteredArticles;
   }
 
-  public int write(int boardId, int memberId, String title, String body) {
+  public int write(int boardId, int memberId, String title, String body, int hitCount) {
     int id = lastId + 1;
     String regDate = Util.getNowDateStr();
     String updateDate = regDate;
-    Article article = new Article(id, boardId, memberId, title, body, regDate, updateDate);
+    Article article = new Article(id, boardId, memberId, title, body, regDate, updateDate, hitCount);
     articles.add(article);
     lastId = id;
 

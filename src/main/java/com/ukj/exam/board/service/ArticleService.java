@@ -1,6 +1,7 @@
 package com.ukj.exam.board.service;
 
 import com.ukj.exam.board.repository.ArticleRepository;
+import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Article;
 
 import java.util.List;
@@ -17,12 +18,12 @@ public class ArticleService {
     for (int i = 1; i <= 100; i++) {
       String title = "제목" + i;
       String body = "내용" + i;
-      write(i % 2 + 1, i % 2 + 1, title, body);
+      write(i % 2 + 1, i % 2 + 1, title, body, Util.getRandomInt(1, 100));
     }
   }
 
-  public int write(int boardId, int memberId, String title, String body) {
-    return articleRepository.write(boardId, memberId, title, body);
+  public int write(int boardId, int memberId, String title, String body, int hitCount) {
+    return articleRepository.write(boardId, memberId, title, body, hitCount);
   }
 
   public List<Article> getArticles() {
