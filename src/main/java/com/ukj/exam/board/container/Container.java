@@ -25,9 +25,9 @@ public class Container {
   @Getter
   private static MemberService memberService;
   @Getter
-  private static ArticleService articleService;
-  @Getter
   private static BoardService boardService;
+  @Getter
+  private static ArticleService articleService;
 
   @Getter
   private static MemberRepository memberRepository;
@@ -51,13 +51,13 @@ public class Container {
     sc = new Scanner(System.in);
     session = new Session();
 
-    memberService = new MemberService();
-    boardService = new BoardService();
-    articleService = new ArticleService();
-
     memberRepository = new MemberRepository();
     boardRepository = new BoardRepository();
     articleRepository = new ArticleRepository();
+
+    memberService = new MemberService();
+    boardService = new BoardService();
+    articleService = new ArticleService();
 
     needLoginInterceptor = new NeedLoginInterceptor();
     needLogoutInterceptor = new NeedLogoutInterceptor();

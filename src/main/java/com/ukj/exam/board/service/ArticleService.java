@@ -19,6 +19,7 @@ public class ArticleService {
       String title = "제목" + i;
       String body = "내용" + i;
       write(1, 1, title, body);
+      write(2, 2, title, body);
     }
   }
 

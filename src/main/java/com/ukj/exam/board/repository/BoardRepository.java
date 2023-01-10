@@ -1,7 +1,6 @@
 package com.ukj.exam.board.repository;
 
 import com.ukj.exam.board.util.Util;
-import com.ukj.exam.board.vo.Article;
 import com.ukj.exam.board.vo.Board;
 
 import java.util.ArrayList;

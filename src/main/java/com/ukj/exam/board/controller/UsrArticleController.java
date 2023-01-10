@@ -2,6 +2,7 @@ package com.ukj.exam.board.controller;
 
 import com.ukj.exam.board.service.ArticleService;
 import com.ukj.exam.board.service.BoardService;
+import com.ukj.exam.board.service.MemberService;
 import com.ukj.exam.board.util.Util;
 import com.ukj.exam.board.vo.Article;
 import com.ukj.exam.board.container.Container;
@@ -15,11 +16,13 @@ import java.util.Map;
 public class UsrArticleController {
   private ArticleService articleService;
   private BoardService boardService;
+  private MemberService memberService;
   private List<Article> articles;
 
   public UsrArticleController() {
-    articleService  = Container.getArticleService();
     boardService = Container.getBoardService();
+    articleService  = Container.getArticleService();
+    memberService = Container.getMemberService();
     articles = articleService.getArticles();
     makeTestData();
   }
@@ -137,7 +140,7 @@ public class UsrArticleController {
 
     System.out.println("== 게시물 리스트 ==");
     System.out.println("-------------------");
-    System.out.println("번호 / 제목 / 수정 날짜 및 시간");
+    System.out.println("번호 / 게시판 / 작성자 / 제목 / 수정 날짜 및 시간");
 
     // 검색 시작
     List<Article> filteredArticles = articles;
@@ -172,10 +175,21 @@ public class UsrArticleController {
     }
 
     for (Article article : sortedArticles) {
-      System.out.printf("%d / %s / %s\n", article.getId(), article.getTitle(), article.getUpdateDate());
+      String boardName = getBoardNameByBoardId(article.getBoardId());
+      String writeName = getWriteNameByBoardId(article.getBoardId());
+
+      System.out.printf("%d / %s / %s / %s / %s\n", article.getId(), boardName, writeName, article.getTitle(), article.getUpdateDate());
     }
 
     System.out.println("-------------------");
+  }
+
+  private String getWriteNameByBoardId(int memberId) {
+    return memberService.getMemberById(memberId).getLoginId();
+  }
+
+  private String getBoardNameByBoardId(int boardId) {
+    return boardService.getBoardById(boardId).getName();
   }
 
 }
